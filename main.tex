@@ -1,0 +1,458 @@
+\documentclass[11pt,a4paper,twoside]{book}
+
+%\synctex=1
+
+\usepackage{varioref} % intelligent page references
+\usepackage{hyperref} % make links
+
+\usepackage{url}
+\usepackage{doi} % doi links
+%\usepackage{a4wide}
+\usepackage[dutch,english]{babel} % use both English and Dutch
+\usepackage{amsmath} % all good math stuff
+\usepackage{amssymb}
+\usepackage[]{graphicx}
+\usepackage{float}
+\usepackage{subfloat}
+\usepackage[hang,bf]{caption} % nice captions and formatting of it
+\usepackage{subcaption} 
+\usepackage{pdfpages} % insert whole pdf (or pages from it)
+
+\usepackage[toc]{glossaries} % list of abbreviations
+\usepackage{imakeidx} % list of abbreviations
+
+\usepackage{rotating} % tables, figures, ... rotated 
+\usepackage{arydshln} % advanced package for tables: dashed lines etc
+\usepackage[shortcuts]{extdash} % more types of dashes, sometimes useful
+\usepackage[version=3]{mhchem} % chemistry symbols: \ce{NH3} gives NH$_3$
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables for horizontal lines
+\usepackage{cancel} % canceling of terms in math expressions
+
+\usepackage{emptypage} % allows inclusion of empty pdf pages
+
+\usepackage[utf8]{inputenc} % use UTF-8, to make life easier
+
+\usepackage[square,numbers,sort&compress]{natbib}
+\usepackage{nicefrac} % nice inline fractions
+%\usepackage{subfig} % outdated
+
+\usepackage{algorithm} % nice environment for pseudocode
+\usepackage{algpseudocode} % pseudocode
+
+\usepackage{bookmark}
+\usepackage{mathrsfs}
+\usepackage{xcolor} % colors!
+\usepackage{listings} % for source code
+\usepackage[nottoc]{tocbibind} % bibliography in ToC but Toc not in ToC
+\usepackage[Gray,squaren,thinqspace,thinspace]{SIunits} % Nice way of diplaying numbers and units
+
+\usepackage{braket} % bra ket stuff
+\usepackage{csquotes} % nice quotes
+\usepackage{amsthm} % for \newtheorem commands
+\usepackage[toc,page]{appendix}
+\usepackage{mathtools} % for dcases
+\usepackage{bbold} 
+\usepackage{dsfont} 
+\usepackage{chemfig} 
+\usepackage{combelow} % Typeset "comma-below" letters, as in Romanian
+\usepackage{memhfixc} % for \cleartorecto and \cleartoverso
+
+\usepackage{afterpage} 
+% create new blank pages with no style until the next uneven page, not do always work?
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+\usepackage{epigraph} % for nice quotes in chapters
+
+\usepackage{bibentry} % for list of publications in appendix
+%\makeatletter
+%\renewcommand\bibentry[1]{\nocite{#1}{\frenchspacing
+%     \@nameuse{BR@r@#1\@extra@b@citeb}}}
+%\makeatother
+
+% indenting multiline footnotes
+\usepackage{scrextend}
+\deffootnote{0em}{1.6em}{\thefootnotemark.\enskip}
+
+\usepackage{etoolbox}
+% bordermatrix with [ ] instead of ( )
+\let\bbordermatrix\bordermatrix
+\patchcmd{\bbordermatrix}{8.75}{4.75}{}{}
+\patchcmd{\bbordermatrix}{\left(}{\left[}{}{}
+\patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
+
+% less white space before subequation
+\preto\subequations{\ifhmode\unskip\fi}
+
+% packages not used, but perhaps interesting
+
+%\usepackage{pifont}
+%\usepackage{ulem}
+%\usepackage{soul}
+%\usepackage{makeidx}                    % index
+%\usepackage{slantsc}
+%\usepackage{placeins}
+%\renewcommand*\sfdefault{uop}
+%\renewcommand*\familydefault{\sfdefault} 
+
+
+%% hypersetup
+\hypersetup{
+    pdfauthor={Ward Poelmans},
+    pdftitle={Variational determination of the two-particle density matrix: the case of doubly-occupied space},
+ %   pdfkeywords={v2DM, DOCI, Hubbard, GPGPU, cluster},
+    pdfsubject={},
+%    plainpages=false,
+    pdfcreator={\LaTeX\ with package \flqq hyperref\frqq}
+    pdfpagelabels,
+    bookmarksopen=true,
+    bookmarksnumbered=true,
+    unicode=true,
+}		
+
+%\DeclareUnicodeCharacter{2212}{\textminus}% requires a unicode capable editor
+%\usepackage{textcomp}
+
+\newcommand{\minus}{\scalebox{0.75}[1.0]{$-$}} % short minus sign
+
+% papersize required for FEA
+\usepackage{geometry}
+\geometry{papersize={16cm,24cm},layoutsize={16cm,24cm},top=2cm,bottom=2cm,left=2cm,right=2cm}
+\usepackage[strict]{changepage}
+
+% font
+\usepackage[T1]{fontenc}
+%\usepackage{bera}
+\usepackage{libertine}
+\renewcommand*\familydefault{\sfdefault}  % biolinum
+%\usepackage{libgreek}
+%\usepackage[libertine]{newtxmath}
+
+\usepackage{eucal}
+%\usepackage{kpfonts}					% ander lettertype
+%\usepackage[sc]{mathpazo}
+%\linespread{1.05}         % Palatino needs more leading (space between lines)
+%\usepackage[T1]{fontenc}
+
+%\usepackage{lmodern} % load a font with all the characters
+%\renewcommand*\familydefault{\sfdefault}  % biolinum
+
+%header
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\widowpenalty=1000
+\clubpenalty=1000
+\hyphenpenalty=500
+
+\fancyhead[RE]{\slshape \rightmark}
+\fancyhead[LO]{\slshape \leftmark}
+\fancyhead[RO]{}
+\fancyhead[LE]{}
+
+% alinea
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+
+% subsubsection: different type of numbering (not 1.11.2 but just roman numbers)
+\setcounter{secnumdepth}{3} 	                % use numbers until depth 3
+\def\thesubsubsection{\Roman{subsubsection}.}	% romain numbers for index of subsubfigures
+
+% title of chapter
+\renewcommand{\chaptermark}[1]{
+\markboth{#1}{}
+}
+
+% tocdept in table of content
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\setcounter{tocdepth}{1}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% custom commands
+\newcommand{\pafgeleide}[2]{\frac{\partial #1}{\partial #2}}						% partiele afgeleide
+\newcommand{\ptweeafgeleide}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}}
+\newcommand{\afgeleide}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}						% afgeleide
+\newcommand{\subsafgeleide}[2]{\frac{\mathrm{D} #1}{\mathrm{D} #2}}					% substantiele afgeleide
+\newcommand{\diff}{\mathrm{d}}						 								% rechte d voor dx bvb
+\newcommand{\ltransf}{\stackrel{\mathcal{L}}{\longleftrightarrow}}					% pijl laplace
+\newcommand{\laplace}{\mathcal{L}}													% teken laplace
+\newcommand{\heaviside}{\mathbb{H}}													% Heavisidefunctie
+\newcommand{\abs}[1]{\left|#1\right|}												% absolute waarde
+\newcommand{\gehelegetallen}{\mathbb{Z}}											% symbool gehele getallen
+\newcommand{\complexegetallen}{\mathbb{C}}											% symbool complexe getallen
+\newcommand{\verz}[1]{\left\{ #1 \right\}}											% accolades
+\newcommand{\vnabla}{\vec{\nabla}}													% Nabla met een vectorteken erboven
+\newcommand{\tens}[1]{\boldsymbol{#1}}												% tensorteken
+\renewcommand{\vec}[1]{\boldsymbol{#1}}												% vectorteken
+\newcommand{\odd}{\mathcal{O}}														% oneven
+\newcommand{\even}{\mathcal{E}}														% even
+\newcommand{\vet}[1]{\boldsymbol{#1}}												% iets in het vet plaatsen in math omgeving		
+
+\newcommand{\tr}[1]{\mathrm{Tr}\left(#1\right)}
+\newcommand{\erdm}[1]{\rho_{#1}}
+\newcommand{\trdm}[1]{\Gamma_{#1}}
+\newcommand{\drdm}[1]{{^3 \Gamma_{#1}}}
+
+\newcommand{\padd}[1]{\hat{a}_{#1}^{\dagger}}
+\newcommand{\pdel}[1]{\hat{a}_{#1}}
+
+\newcommand{\citew}[1]{\citeauthor{#1} \citep{#1}}
+
+%\newcommand{\todo}[1]{}
+\newcommand{\todo}[1]{{\color{red}{\textbf{Todo: #1}}}}
+
+\newcommand{\dth}{$\text{D}_\text{2h}$}
+\newcommand{\co}{$\text{C}_\text{1}$}
+\newcommand{\ctv}{$\text{C}_\text{2v}$}
+
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+
+
+%physical properties
+\newcommand{\efield}{\mathcal{E}}														% even
+
+% Clebsch-coefficients
+\newcommand{\cgc}[6]{ \left\langle #1 \: #2 \; #3 \: #4 \right| #5 \: #6 \left.\right\rangle }
+
+% 3j symbols
+\newcommand{\driej}[6]{
+    \left(
+    \begin{array}{ccc}
+        #1 & #3 & #5 \\
+        #2 & #4 & #6
+    \end{array}
+    \right)
+}
+
+% reduced matrix element
+\newcommand{\rme}[3]{\bigl\langle #1 \bigl|\bigl| #2 \bigr|\bigr| #3 \bigr\rangle}		
+
+\makeatletter
+\newcommand{\pushright}[1]{\ifmeasuring@#1\else\omit\hfill$\displaystyle#1$\fi\ignorespaces}
+\newcommand{\pushleft}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\hfill\fi\ignorespaces}
+\newcommand{\specialcell}[1]{\ifmeasuring@#1\else\omit$\displaystyle#1$\ignorespaces\fi}
+\makeatother
+
+\graphicspath{{figures/}}
+
+\hyphenation{re-pre-sen-ta-bil-it-y}
+
+\newacronym{1dm}{1DM}{first-order reduced Density Matrix}
+\newacronym{2dm}{2DM}{second-order reduced Density Matrix}
+\newacronym{3dm}{3DM}{third-order reduced Density Matrix}
+\newacronym{ap1rog}{AP1roG}{Antisymmetric Product of one-reference-orbital Geminals}
+\newacronym{apg}{APG}{Antisymmetric Product of Geminals}
+\newacronym{bpp}{BPP}{Bounded-Error Probabilistic Polynomial Time}
+\newacronym{bqp}{BQP}{Bounded-Error Quantum Polynomial Time}
+\newacronym{casscf}{CASSCF}{Complete Active Space Self-Consistent Field}
+\newacronym{cc}{CC}{Coupled Cluster}
+\newacronym{ccd}{CCD}{Coupled Cluster with Double excitations}
+\newacronym{cc-pvdz}{cc-pVDZ}{Correlation Consistent Polarized Valence Double Zeta}
+\newacronym{ccsdt}{CCSD(T)}{Coupled Cluster with Singles, Doubles and Triples in Perturbation}
+\newacronym{ci}{CI}{Configuration Interaction}
+\newacronym{cid}{CID}{Configuration Interaction with Double excitations}
+\newacronym{cidq}{CIDQ}{Configuration Interaction with Double and Quadruple excitations}
+\newacronym{cisd}{CISD}{Configuration Interaction with Single and Double excitations}
+\newacronym[description={Edmiston-Ruedeberg localized orbitals}]{er}{ER}{Edmiston-Ruedeberg}
+\newacronym[description={Karush–Kuhn–Tucker conditions}]{kkt}{KKT}{Karush–Kuhn–Tucker}
+\newacronym{dft}{DFT}{Density Functional Theory}
+\newacronym{dmrg}{DMRG}{Density Matrix Renormalization Group}
+\newacronym{doci}{DOCI}{Doubly Occupied Configuration Interaction}
+\newacronym{flops}{FLOPS}{Floating-Point Operations per Second}
+\newacronym{fullci}{FullCI}{Full Configuration Interaction}
+\newacronym{fulldoci}{FullDOCI}{Full Doubly Occupied Configuration Interaction}
+\newacronym{ghf}{GHF}{General Hartree-Fock}
+\newacronym{gvb}{GVB}{General Valence Bond}
+\newacronym{hf}{HF}{Hartree-Fock}
+\newacronym{ma}{MA}{Merlin-Arthur}
+\newacronym{mcscf}{MCSCF}{Multi-Configurational Self-Consistent Field}
+\newacronym{mo}{MO}{Molecular Orbital theory}
+\newacronym{mpi}{MPI}{Message Passing Interface}
+\newacronym{mps}{MPS}{Matrix Product State}
+\newacronym{np}{NP}{Nondeterministic Polynomial Time}
+\newacronym{p}{P}{Deterministic Polynomial Time}
+\newacronym{qma}{QMA}{Quantum Merlin Arthur}
+\newacronym{rhf}{RHF}{Restricted Hartree-Fock}
+\newacronym{sa}{SA}{Simulated Annealing}
+\newacronym{sdp}{SDP}{Semidefinite Programming}
+\newacronym{uhf}{UHF}{Unrestricted Hartree-Fock}
+\newacronym{v2dm-doci}{v2DM-DOCI}{Variational Optimization of the second-order reduced Density Matrix in the DOCI space}
+\newacronym{v2dm}{v2DM}{Variational Optimization of the second-order reduced Density Matrix}
+\newacronym{vbscf}{VBSCF}{Valence Bond Self-Consistent Field}
+\newacronym{vb}{VB}{Valence Bond}
+
+\newglossaryentry{seniority}
+{
+  name=seniority,
+  description={The number of unpaired particles in the wave function}
+}
+\newglossaryentry{geminal}
+{
+  name=geminal,
+  description={A two-particle state}
+}
+\newglossaryentry{size-extensive}
+{
+  name=size extensive,
+  description={The energy scales (linearly) with the number of electrons}
+}
+\newglossaryentry{size-consistent}
+{
+  name=size consistent,
+  description={The energy of a seperated (dissociated) system is the sum of the energy of its parts}
+}
+
+\makeglossaries
+
+\newtheorem{theorem}{Theorem}
+
+% for the papers part, reset chapter numbering a new part
+\makeatletter
+\@addtoreset{chapter}{part}
+\makeatother
+
+% this must be one of the last packages loaded !!
+\usepackage{cleveref}
+
+% special links for 'Paper' chapters, try \cref{paper1}
+\crefname{mypaper}{Paper}{Papers}
+
+\bibliographystyle{mybibtexstyle} 
+%\bibliographystyle{unsrtnat} 
+%\nobibliography*
+
+\begin{document}		
+
+\frontmatter
+
+    % front page %
+    %%%%%%%%%%%%%%
+    \input{cover}
+
+    % roman numbers for the preamble
+    %\includepdf[pages=1-2]{./titelpagina.pdf}
+    \pagenumbering{roman}
+    \thispagestyle{empty}
+%    \setcounter{page}{3}
+
+    \cleardoublepage 
+    \thispagestyle{empty}
+%    \newpage
+    \thispagestyle{empty}
+
+    % CMM page %
+    %%%%%%%%%%%%
+    \newpage
+    \thispagestyle{empty}
+    \noindent
+    \\
+	\vfill
+	\begin{figure}[h!]
+	  \includegraphics[width=0.15\textwidth]{acknowledge/HPCUGent.jpg} \hspace{0.3cm}
+	  \includegraphics[width=0.2\textwidth]{acknowledge/logo_VSC_CMYK2.pdf} \hspace{0.3cm}
+	  \includegraphics[width=0.2\textwidth]{acknowledge/hercules.png} \hspace{0.3cm}
+	  \includegraphics[width=0.2\textwidth]{acknowledge/EWI.jpg} 
+	\end{figure}
+	    {\small
+	    \noindent \textsf{The computational resources (Stevin Supercomputer Infrastructure) and services used in this work were provided by the VSC (Flemish Supercomputer Center), funded by Ghent University, the Hercules Foundation and the Flemish Government - department EWI.}}
+    \vfill
+    \begin{figure}[h!]
+	    \includegraphics[width=0.6\textwidth]{cmm.png}
+    \end{figure}
+    {\small
+    \noindent \textsf{This research was conducted at the Center for Molecular Modeling.}
+    }
+
+
+    % Quote page %
+    %%%%%%%%%%%%%%
+%    \include{quote}
+
+%    \newpage % strikt noodzakelijk om een header op deze blz. te vermijden
+
+    % Jury page %
+    %%%%%%%%%%%%%
+    \include{jury}
+
+    \cleardoublepage
+
+    \include{thankyou}
+
+    % table of content etc %
+    %%%%%%%%%%%%%%%%%%%%%%%%
+    % do not show the ToC in the ToC but do show it in the pdf bookmarks
+    \cleardoublepage
+    \pdfbookmark{\contentsname}{Contents}
+    \tableofcontents
+
+    \input{summary-dutch}
+    \input{summary}
+
+    \glossarystyle{altlist}
+    \printglossary[title=List of Abbreviations and Glossary] % toctitle=Terms and abbreviations]
+
+%    \listoffigures
+%    \listoftables
+	
+%    \afterpage{\null\blankpage}
+
+
+\mainmatter
+    \part{Variational determination of the two-particle density matrix: the case of doubly-occupied space}
+
+\input{introduction}
+
+% reset all acronyms after the introduction
+\glsresetall
+
+\input{n-representability}
+
+\input{sdp}
+
+\input{results}
+
+\include{conclusions}
+
+%\afterpage{\null\blankpage}
+
+    \part{Papers}
+    \let\oldchaptername\chaptername
+    \let\oldthechapter\thechapter
+
+%    \renewcommand\thechapter{\Roman{chapter}} % if you want roman numbering
+    \renewcommand{\chaptername}{Paper}
+
+    \chapter{Variational Two-Particle Density Matrix Calculation for the Hubbard Model Below Half Filling Using Spin-Adapted Lifting Conditions}
+    \label[mypaper]{paper1}
+    \includepdf[pages=-]{papers/paper1.pdf}
+
+
+    % Appropriate credit for the requested material should be given as follows: "Reprinted (adapted) with permission from (COMPLETE REFERENCE CITATION). Copyright (YEAR) American Chemical Society." Insert appropriate information in place of the capitalized words. 
+
+
+    % APPENDIX &
+    %%%%%%%%%%%%
+
+%\afterpage{\null\blankpage}
+
+\bookmarksetupnext{level=part} % puts the bookmark at the same level as a part
+\begin{appendices}
+    \input{listpapers}
+
+\end{appendices}
+
+
+\backmatter
+
+    \bookmarksetupnext{level=part} % puts the bookmark at the same level as a part
+    \bibliography{refs}
+
+\end{document}
+
+% vim: spell spelllang=en

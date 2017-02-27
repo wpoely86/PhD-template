@@ -1,0 +1,80 @@
+\chapter{Introduction}\label{ch1}
+\setlength{\epigraphrule}{0pt}
+\setlength{\epigraphwidth}{0.75\textwidth}
+\epigraph{\textit{We must be clear that when it comes to atoms, language can be used only as in poetry. The poet, too, is not nearly so concerned with describing facts as with creating images and establishing mental connections.}}{Niels Bohr}
+
+Richard Feynman, one of the great physicists of the twentieth century, once asked his students:
+\begin{displayquote}
+If, in some cataclysm, all of scientific knowledge were to be destroyed, and only one sentence passed on to the next generation of creatures, what statement would contain the most information in the fewest words?
+\end{displayquote}
+It is an interesting question and a wide range of answers is possible but Feynman's own idea is what is of interest here:
+\begin{displayquote}
+I believe it is the atomic hypothesis that all things are made of atoms - little particles that move around in perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another. In that one sentence, you will see, there is an enormous amount of information about the world, if just a little imagination and thinking are applied.
+\end{displayquote}
+
+\todo{add more}
+
+
+\section{Variational second-order density matrix optimization}\label{ch1-sec2}
+
+An $N$-particle quantum system with pairwise interactions is governed by a Hamiltonian
+\begin{equation}
+    \hat H = \hat T + \hat V,
+    \label{1-eq15}
+\end{equation}
+where $\hat T$ are the one-body operators and $\hat V$ the two-body operators. We want to find the ground state energy and wave function,
+\begin{equation}
+    \hat H \Psi(\vet x) = E_0 \Psi(\vet x),
+    \label{1-eq16}
+\end{equation}
+
+In the second quantization formalism, the Hamiltonian \eqref{1-eq15} can be written as
+\begin{equation}
+    \hat H = \sum_{\alpha\beta} T_{\alpha\beta} \padd{\alpha}\pdel{\beta} + \frac14 \sum_{\alpha\beta\gamma\delta} V_{\alpha\beta;\gamma\delta}~ \padd{\alpha}\padd{\beta}\pdel{\delta}\pdel{\gamma},
+    \label{1-eq13}
+\end{equation}
+where $T_{\alpha\beta}=\braket{\alpha|\hat T|\beta}$ and $V_{\alpha\beta;\gamma\delta}=\braket{\alpha\beta|\hat V|\gamma\delta}$ are the one- and two-electron integrals. 
+In this work, we only consider Hamiltonians which are field-free (e.g. no magnetic field), non-relativistic and real. The wave function is always over the field $\mathbb{R}$. These are the default assumptions in quantum chemistry.
+For atoms and molecules, this means that $\hat T$ is the sum of the electronic kinetic energy and the nuclei-electron attraction, whereas $\hat V$ represents the interelectronic Coulomb repulsion. We always work within the Born-Oppenheimer approximation \citep{szabo_modern_1996}: we assume that the wave function can be split in its electronic and nuclear degrees of freedom and we neglect the latter.
+The associated Schrödinger equation in its matrix form is
+\begin{equation}
+    \hat H \ket{\psi} = E_0 \ket{\psi}.
+    \label{1-eq14}
+\end{equation}
+The most simple solution is the mean-field approximation, also known as \gls{hf}, in which $\ket{\psi}$ is given by a single Slater determinant:
+\begin{equation}
+    \ket{\psi} = \padd{\alpha_1}\padd{\alpha_2}\ldots\padd{\alpha_N}\ket{}~.
+    \label{1-eq17}
+\end{equation}
+A Slater determinant is nothing more than the antisymmetric linear combination of a set of orthogonal single-particle states.
+There are $\frac{M!}{N!(M-N)!}$ possible Slater determinants if the dimension of the single-particle basis is $M$ and $N$ the number of particles. They form a complete basis in which we can expand the wave function
+\begin{equation}
+    \ket{\psi} = \sum_{\alpha_1 \alpha_2 \alpha_3 \ldots \alpha_N} c_{\alpha_1 \alpha_2 \alpha_3 \ldots \alpha_N} ~ \padd{\alpha_1}\padd{\alpha_2}\padd{\alpha_3}\ldots \padd{\alpha_N} \ket{}.
+    \label{1-eq18}
+\end{equation}
+In the \gls{ci} method \citep{helgaker2007molecular}, the wave function is written as a linear combination of a set of Slater determinants. The coefficients are then optimized to find the lowest energy in \cref{1-eq14}. The difficulty in this method lies in picking a suitable set of Slater determinants. 
+The best possible solution within the basis set limit is found when all possible Slater determinant are used. This is called \gls{fullci} and coincides with the exact diagonalization of the Hamiltonian matrix. Unfortunately, this is unfeasible for all but the smallest systems. \todo{rework paragraph}
+
+
+
+To make further progress in the \gls{v2dm} method, two clear directions exist: (1) the search for new $N$-representability conditions which
+are computationally feasible (cheap); and (2) improving the semidefinite program algorithms to exploit the specific structure of \gls{v2dm}. 
+On the first path, \citew{qsep} introduced subsystems constraints to fix the problem of fractional charges \citep{helen_1}. \citew{shenvi}
+introduced active-space constraints. Stricter bounds on the two-index conditions were derived \citep{dimi,55Johnson_2013a}. Spin symmetry
+and point-group symmetry of molecules were exploited \citep{maz_spin}. A stronger three-index condition was derived \citep{maz_T2_prime}.
+System-specific constraints were introduced \citep{maz_ham,218Verstichel_2012}. Even excitation energies were calculated
+\citep{12Aggelen_2013} using the variationally optimized \gls{2dm}. Additional constraints for non-singlet states were discussed
+\citep{128Aggelen_2012}. Linear inequalities for the \gls{2dm} were found \citep{davidson_3,davidson_2,davidson_1}. This list is far from
+conclusive and only aims to give a glance of the activity on the $N$-representability front.
+Several books and review papers are written about \gls{v2dm} and they provide an excellent overview of the road so far
+\citep{coleman_book,rdm_book,mazz_book,braams_book,maz_review,Ayers20131}.
+
+On the semidefinite programming front, several algorithms were tried and customized to \gls{v2dm}
+\citep{cpc_proc,maz_prl,primal_dual,mazziotti_large-scale_2011}. The boundary point method \citep{maz_bp} is currently the fastest, but it
+is not always stable. In the convex optimization literature, \gls{v2dm} is known under the category 'very large scale': the most common
+semidefinite programming problems are much smaller. There exist general purpose solvers \citep{sdpa1} but they are not efficient enough for
+our problem size.
+
+ 
+
+% vim: spell spelllang=en  tw=140
