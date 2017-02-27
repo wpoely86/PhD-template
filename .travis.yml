@@ -1,0 +1,31 @@
+language: generic
+env:
+  global:
+      # set this to the repo which should have the resulting PDF's
+      - GITHUB_REPO="wpoely86/PhD-template"
+      # this is an encrypted version of an access token for the repo above.
+      # Create it by using the travis tool: travis encrypt -r $GITHUB_REPO GH_TOKEN=<TOKEN>
+      # and replace it below
+      - secure: NiO0hBet27tZnWcklzPubCiksQAJBzVjv3qF6a2YaPxgwba0ZdNDWiXaX6b9FpT5cnQ+t6SRJFEbBtwuJ78cf5j4lx+n5/X//Rm5F5vUu3H2r/KAsOU1yu7wW+v8yQqb71qaGMEDaQ4LvU44/ys2sdTkha/+e2XqtEG5Mxr/8PVsNU/yxearwA80+qwO4uFeYhQekEt7aWASG/GV2Y7a5CgpMAyHWzdjxbW+sMQky352cZTS+9oIgH+XfeCOVC8O5rqe4JKJ8FRJHvVgQyLhtVN0BbBj9XXNtSnRj9JSHjpym9Mn7dsKJerbxM77QzCTElQMPYP+aKwb6cLoIA0F1r9y0uQLCYdb5tf4PIHDqBCEr6KkG14ehYaXxysH4g5KnHgqi2lBvLaDd6KIbBzsBjRfWUQ97gU7AwADRm4xRj97eUJ5IFSdlHFwA9B/KoCR90J6uvk0z17dZvZM5cQz5kijaoMTn3YpHefXYYabaysWi9L1mzr1ckeQ5+cmjSpGFS4tKrusxZJSOERuVFUgbMe3+QyqPWtl8OJF2Nz+qhP1fJuY7jQfnKZW8qwNs0szwWscqVUvaelv3ZUxW+S2trc5Se1Pe7dFnS63cypaSsETV/0sInagI6XfSd7lJFn+7Wnw9FUk0zR6IK6Is5tLeFlE8DwOgu6Vto0l68SCUBw=
+before_install:
+    - cd $HOME
+    - travis_retry wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+    - tar -xzf install-tl-unx.tar.gz ; cd install-tl-*/
+install:
+    - sed -i "s:MYPREFIX:$HOME:g" $TRAVIS_BUILD_DIR/texlive.profile
+    - ./install-tl -profile $TRAVIS_BUILD_DIR/texlive.profile
+    - export PATH=$HOME/.texlive/bin/x86_64-linux:$PATH
+    - pdflatex --version ; latexmk --version
+script:
+    - cd $TRAVIS_BUILD_DIR
+    - latexmk -pdf main.tex
+after_success:
+    - mkdir -p $HOME/build
+    - cp -a main.pdf $HOME/build
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: $TRAVIS_BUILD_DIR/deploy.sh
+  on:
+      repo: $GITHUB_REPO
+      branch: master
