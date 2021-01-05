@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/wpoely86/PhD-template/workflows/Build%20and%20publish%20PDF%20files/badge.svg)](https://github.com/wpoely86/PhD-template/actions)
+[![Build Status](https://github.com/wpoely86/PhD-template/workflows/Build%20PhD%20template%20pdf/badge.svg)](https://github.com/wpoely86/PhD-template/actions)
 
 LaTeX PhD template
 ==================

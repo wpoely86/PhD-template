@@ -1,4 +1,4 @@
-name: Build and publish PDF files
+name: Build PhD template pdf
 on: [push, pull_request]
 
 jobs:
