@@ -1,0 +1,28 @@
+name: Build and publish PDF files
+on: [push, pull_request]
+
+jobs:
+  build_pdf:
+      runs-on: ubuntu-latest
+      container:
+        image: danteev/texlive:latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build LaTeX
+        run: latexmk -pdf main.tex
+      - name: Store produce PDFs
+        uses: actions/upload-artifact@v2
+        with:
+          name: main-pdf
+          path: ./main.pdf
+      - name: collect PDFs for publishing
+        run: |
+          mkdir web
+          cp -a main.pdf index.html web
+      - name: Publish new PDFs on website
+        if: github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web
