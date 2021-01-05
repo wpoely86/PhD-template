@@ -17,3 +17,8 @@ steps:
 
 - script: latexmk -pdf main.tex
   displayName: 'build pdf'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+      pathToPublish: 'main.pdf'
+      artifactName: main_pdf
